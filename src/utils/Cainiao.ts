@@ -32,24 +32,17 @@ class Cainiao {
     parse(data: string) {
         return new Promise((resolve, reject) => {
             const dom = htmlParser(data)
-            const rawData = dom
-                .querySelector('#waybill_list_val_box')
-                .innerHTML.replace(/&quot;/g, '"')
+            const rawData = dom.querySelector('#waybill_list_val_box').innerHTML.replace(/&quot;/g, '"')
             try {
                 const parsedJson = JSON.parse(rawData)
                 const parsedData = parsedJson.data[0]
-                const {
-                    mailNo,
-                    status,
-                    originCountry,
-                    destCountry,
-                } = parsedData
+                const { mailNo, status, originCountry, destCountry } = parsedData
                 const { detailList } = parsedData.section2
 
                 const outputJson: ResponseJSON = {
                     trackingFound: detailList.length > 0,
                     trackingNumber: mailNo,
-                    delivered: Array('CWS_SIGNIN', 'SIGNIN').includes(status),
+                    delivered: (status && status.indexOf('SIGNIN') >= 0) || false,
                     originCountry: originCountry || null,
                     destinationCountry: destCountry || null,
                     track: detailList.map((chunk: TrackChunkJSON) => ({
