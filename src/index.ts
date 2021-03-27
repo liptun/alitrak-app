@@ -7,12 +7,15 @@ const port: number = 3333
 app.get('/track/:no', (req, res) => {
     const tracker = new Cainiao()
     const trackingNumber = req.params.no
-    tracker.get(trackingNumber).then((trackingData: string) => {
-        res.send(trackingData)
-    }).catch((e:any) => {
-        res.statusCode = 400
-        res.json({'error': e.message})
-    })
+    tracker
+        .get(trackingNumber)
+        .then((trackingData: string) => {
+            res.send(trackingData)
+        })
+        .catch((e: any) => {
+            res.statusCode = 400
+            res.json({ error: e.message })
+        })
 })
 
 app.get('*', (_, res) => {
