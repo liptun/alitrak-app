@@ -3,8 +3,8 @@ import validator from 'validator'
 import bcrypt from 'bcrypt'
 
 interface IUser extends Document {
-    email: string,
-    password: string,
+    email: string
+    password: string
     name: string
 }
 
